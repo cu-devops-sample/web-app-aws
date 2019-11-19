@@ -1,6 +1,4 @@
 {
-  "Tags":
-  {
-    "awscodestar:projectArn":"arn:$PARTITION$:codestar:$AWS_REGION$:$ACCOUNT_ID$:project/$PROJECT_ID$"
-  }
+  "ProjectId": "cu-te-pj",
+  "CodeDeployRole":"arn:aws:iam::${ACCOUNT_ID}:role/CodeStarWorker-cu-test-CodeDeploy",
 }
