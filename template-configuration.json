@@ -1,4 +1,0 @@
-{
-  "ProjectId": "cu-te-pj",
-  "CodeDeployRole":"arn:aws:iam::${ACCOUNT_ID}:role/CodeStarWorker-cu-test-CodeDeploy",
-}
