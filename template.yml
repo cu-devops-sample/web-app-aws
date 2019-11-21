@@ -4,11 +4,7 @@ Transform: AWS::Serverless-2016-10-31
 Parameters:
   ProjectId:
     Type: String
-    Description: AWS CodeStar projectID used to associate new resources to team members
-  # CodeDeployRole:
-  #   Type: String
-  #   Description: IAM role to allow AWS CodeDeploy to manage deployment of AWS Lambda functions
-  #   Default: 'arn:aws:iam::${ACCOUNT_ID}:role/CodeStarWorker-cu-test-CodeDeploy'
+    Description: projectID used to associate new resources to team members
   Stage:
     Type: String
     Description: The name for a project pipeline stage, such as Staging or Prod, for which resources are provisioned and deployed.
@@ -42,7 +38,7 @@ Resources:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub 'CodeStar-${ProjectId}-Execution${Stage}'
+      RoleName: !Sub '${ProjectId}-Lambda-Execution${Stage}'
       AssumeRolePolicyDocument:
         Statement:
         - Effect: Allow
@@ -52,4 +48,3 @@ Resources:
       Path: /
       ManagedPolicyArns:
         - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
-      # PermissionsBoundary: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/CodeStar_${ProjectId}_PermissionsBoundary'
