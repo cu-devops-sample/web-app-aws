@@ -17,18 +17,14 @@ phases:
   build:
     commands:
       # Use AWS SAM to package the application by using AWS CloudFormation
+      # S3バケットへアップロードし、public/以下のコンテンツを読み取り専用で公開する。
       - aws s3 cp --recursive public/ s3://$WEBSITE_S3_BUCKET/public/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
       - sed -i -e "s|assets/|$WEBSITE_S3_PREFIX/public/assets/|g" public/index.html
+      # CFテンプレートの内容でモジュールをパッケージし、指定のS3にアップロードする。template-export.ymlにはアップロード先のパスが記載される。
       - aws cloudformation package --template template.yml --s3-bucket $S3_BUCKET --output-template template-export.yml
   post_build:
     commands:
 
-      # Do not remove this statement. This command is required for AWS CodeStar projects.
-      # Update the AWS Partition, AWS Region, account ID and project ID in the project ARN on template-configuration.json file so AWS CloudFormation can tag project resources.
-      - sed -i.bak 's/\$PARTITION\$/'${PARTITION}'/g;s/\$AWS_REGION\$/'${AWS_REGION}'/g;s/\$ACCOUNT_ID\$/'${ACCOUNT_ID}'/g;s/\$PROJECT_ID\$/'${PROJECT_ID}'/g' template-configuration.json
-
-artifacts:
-  type: zip
-  files:
-    - template-export.yml
-    - template-configuration.json
+      # buildセクションにてpackage化したものをCFテンプレートの内容にてCloudformationにてデプロイを行う。
+      # - aws cloudformation deploy --template template-export.yml --stack-name cu-te --parameter-overrides ProjectId=cu-te-pj --capabilities CAPABILITY_NAMED_IAM --role-arn arn:aws:iam::138815884311:role/CodeStarWorker-cu-test-CloudFormation
+      - aws cloudformation deploy --template template-export.yml --stack-name cu-te --parameter-overrides ProjectId=cu-te-pj --capabilities CAPABILITY_NAMED_IAM
