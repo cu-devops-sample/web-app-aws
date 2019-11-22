@@ -26,5 +26,4 @@ phases:
     commands:
 
       # buildセクションにてpackage化したものをCFテンプレートの内容にてCloudformationにてデプロイを行う。
-      # - aws cloudformation deploy --template template-export.yml --stack-name cu-te --parameter-overrides ProjectId=cu-te-pj --capabilities CAPABILITY_NAMED_IAM --role-arn arn:aws:iam::138815884311:role/CodeStarWorker-cu-test-CloudFormation
-      - aws cloudformation deploy --template template-export.yml --stack-name cu-te --parameter-overrides ProjectId=cu-te-pj --capabilities CAPABILITY_NAMED_IAM
+      - aws cloudformation deploy --template template-export.yml --stack-name $PROJECT_ID --parameter-overrides ProjectId=$PROJECT_ID --capabilities CAPABILITY_NAMED_IAM
