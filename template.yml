@@ -16,7 +16,7 @@ Globals:
     DeploymentPreference:
       Enabled: true
       Type: Canary10Percent5Minutes
-      Role: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/CodeStarWorker-cu-test-CodeDeploy'
+      Role: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${ProjectId}-CodeDeploy-Role'
 
 Resources:
   GetHelloWorld:
