@@ -16,7 +16,7 @@ phases:
       - npm test
   build:
     commands:
-      # Use AWS SAM to package the application by using AWS CloudFormation
+
       # S3バケットへアップロードし、public/以下のコンテンツを読み取り専用で公開する。
       - aws s3 cp --recursive public/ s3://$WEBSITE_S3_BUCKET/public/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
       - sed -i -e "s|assets/|$WEBSITE_S3_PREFIX/public/assets/|g" public/index.html
@@ -26,4 +26,4 @@ phases:
     commands:
 
       # buildセクションにてpackage化したものをCFテンプレートの内容にてCloudformationにてデプロイを行う。
-      - aws cloudformation deploy --template template-export.yml --stack-name $PROJECT_ID --parameter-overrides ProjectId=$PROJECT_ID --capabilities CAPABILITY_NAMED_IAM --role-arn arn:aws:iam::$AWS_ACCOUNTID:role/cu-test-cloudformaiton-role
+      - aws cloudformation deploy --template template-export.yml --stack-name $PROJECT_ID --parameter-overrides ProjectId=$PROJECT_ID --capabilities CAPABILITY_NAMED_IAM
