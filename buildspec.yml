@@ -7,7 +7,6 @@ phases:
     commands:
       # Install dependencies needed for running tests
       - npm install
-
       # Upgrade AWS CLI to the latest version
       - pip install --upgrade awscli
   pre_build:
@@ -16,7 +15,6 @@ phases:
       - npm test
   build:
     commands:
-
       # S3バケットへアップロードし、public/以下のコンテンツを読み取り専用で公開する。
       - aws s3 cp --recursive public/ s3://$WEBSITE_S3_BUCKET/public/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
       - sed -i -e "s|assets/|$WEBSITE_S3/$WEBSITE_S3_BUCKET/public/assets/|g" public/index.html
@@ -24,6 +22,5 @@ phases:
       - aws cloudformation package --template template.yml --s3-bucket $S3_BUCKET_AIRTIFACT --output-template template-export.yml
   post_build:
     commands:
-
       # buildセクションにてpackage化したものをCFテンプレートの内容にてCloudformationにてデプロイを行う。
-      - aws cloudformation deploy --template template-export.yml --stack-name $PROJECT_ID --parameter-overrides ProjectId=$PROJECT_ID --capabilities CAPABILITY_NAMED_IAM
+      - aws cloudformation deploy --template template-export.yml --stack-name codebuild-$PROJECT_ID --parameter-overrides ProjectId=$PROJECT_ID --capabilities CAPABILITY_NAMED_IAM
